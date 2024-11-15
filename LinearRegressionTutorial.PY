@@ -1,7 +1,9 @@
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error,mean_absolute_error,mean_absolute_percentage_error,r2_score
 import pandas as pd
 import numpy as np
+import seaborn as sns
 
 
 #class created
@@ -46,11 +48,32 @@ class LinearRegressionModels():
         file="insurance.csv"
         data=pd.read_csv(file)
         df=pd.DataFrame(data)
-        print(df.info(),"\n",df.describe(),"\n",df.columns)
-        print(df.head(5))
-        
+        df=pd.get_dummies(df,columns=['sex','smoker','region'])
+        y=df['charges']
+        x=df.drop('charges',axis=1)
+        model=self.lm.fit(x,y)
+        y_pred=model.predict(x)
+        print(model.score(x,y))
+        print("model mae: ",mean_absolute_error(y,y_pred))
+        print("model mse: ",mean_squared_error(y,y_pred))
+        print("model mape: ",mean_absolute_percentage_error(y,y_pred))
+        print("model r2 score: ",r2_score(y,y_pred)) #model performance
+    def fittingTypes(self):
+        #overfittting: learning more than estimated. it's like memorising. model can predict the future.
+        #underfitting: learning less than estimated. model can't predict the future.
+        #balancedfitting: learning balanced
+        #this dataset comes with seaborn library.
+        df=sns.load_dataset('diamonds')
+        df=pd.get_dummies(df,columns=['cut','color','clarity'])
+        y=df['price']
+        x=df.drop('price',axis=1)
+        x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=42)
+        lm=self.lm
+        model=lm.fit(x_train,y_train)
+        print('train score: ',model.score(x_train,y_train))
+        print('test score: ',model.score(x_test,y_test))
 linearregressionmodels=LinearRegressionModels()
-linearregressionmodels.mseRMSEmae()
+linearregressionmodels.fittingTypes()
 
 
     
