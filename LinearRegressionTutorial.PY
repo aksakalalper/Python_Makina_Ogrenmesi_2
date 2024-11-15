@@ -1,11 +1,12 @@
 from sklearn.linear_model import LinearRegression,Lasso,Ridge,ElasticNet,LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error,mean_absolute_error,mean_absolute_percentage_error,r2_score
+from sklearn.tree import DecisionTreeClassifier,export_graphviz
 import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-
+import graphviz
 
 #class created
 class LinearRegressionModels():
@@ -105,9 +106,21 @@ class LinearRegressionModels():
         model=lr.fit(x_train,y_train)
         print("train score: ",model.score(x_train,y_train))
         print("test score: ",model.score(x_test,y_test))
-        
+    def decisionTree(self):
+        file="heart.csv"
+        data=pd.read_csv(file)
+        df=pd.DataFrame(data)
+        y=df['output']
+        x=df.drop('output',axis=1)
+        tree=DecisionTreeClassifier()
+        model=tree.fit(x,y)
+        print("model score: ",model.score(x,y))
+        x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=42)
+        model=tree.fit(x_train,y_train)
+        print("test score:",model.score(x_test,y_test))
+
 linearregressionmodels=LinearRegressionModels()
-linearregressionmodels.logisticRegression()
+linearregressionmodels.decisionTree()
 
 
     
