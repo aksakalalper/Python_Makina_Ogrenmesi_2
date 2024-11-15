@@ -1,4 +1,4 @@
-from sklearn.linear_model import LinearRegression,Lasso,Ridge,ElasticNet
+from sklearn.linear_model import LinearRegression,Lasso,Ridge,ElasticNet,LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error,mean_absolute_error,mean_absolute_percentage_error,r2_score
 import pandas as pd
@@ -93,9 +93,21 @@ class LinearRegressionModels():
             modelr=Ridge(alpha=index )
             result=modelr.fit(x,y)
             print('score after ridge regression: ',result.score(x,y))
-
+    def logisticRegression(self):
+        file="UCI_Credit_Card.csv"
+        data=pd.read_csv(file)
+        df=pd.DataFrame(data)
+        df=df.drop('ID',axis=1)
+        y=df['default.payment.next.month']
+        x=df.drop('default.payment.next.month',axis=1)
+        x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=42)
+        lr=LogisticRegression()
+        model=lr.fit(x_train,y_train)
+        print("train score: ",model.score(x_train,y_train))
+        print("test score: ",model.score(x_test,y_test))
+        
 linearregressionmodels=LinearRegressionModels()
-linearregressionmodels.ridgeRegression()
+linearregressionmodels.logisticRegression()
 
 
     
