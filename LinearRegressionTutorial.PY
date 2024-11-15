@@ -1,9 +1,10 @@
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression,Lasso,Ridge,ElasticNet
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error,mean_absolute_error,mean_absolute_percentage_error,r2_score
 import pandas as pd
 import numpy as np
 import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 #class created
@@ -72,8 +73,26 @@ class LinearRegressionModels():
         model=lm.fit(x_train,y_train)
         print('train score: ',model.score(x_train,y_train))
         print('test score: ',model.score(x_test,y_test))
+    def ridgeRegression(self):
+    #it's being used for overfitting situation.
+    #it fixes bias and variance.
+    #it fixes features. it makes features coefficent near to zero but not zero!
+        #reading files
+        file="Student_Marks.csv"
+        data=pd.read_csv(file)
+        df=pd.DataFrame(data)
+        y=df['Marks'] #we want to predict that 
+        x=df[['time_study']]
+        plt.style.use('fivethirtyeight')
+        plt.scatter(x,y)
+        #plt.show()
+        model=self.lm.fit(x,y)
+        print("model score:",model.score(x,y))
+        modelr=Ridge(alpha=0.5 )
+        result=modelr.fit(x,y)
+        print('score after ridge regression: ',result.score(x,y))
 linearregressionmodels=LinearRegressionModels()
-linearregressionmodels.fittingTypes()
+linearregressionmodels.ridgeRegression()
 
 
     
