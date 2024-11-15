@@ -88,9 +88,12 @@ class LinearRegressionModels():
         #plt.show()
         model=self.lm.fit(x,y)
         print("model score:",model.score(x,y))
-        modelr=Ridge(alpha=0.5 )
-        result=modelr.fit(x,y)
-        print('score after ridge regression: ',result.score(x,y))
+        alfa=[0.5,1,5,10,100]
+        for index in alfa:
+            modelr=Ridge(alpha=index )
+            result=modelr.fit(x,y)
+            print('score after ridge regression: ',result.score(x,y))
+
 linearregressionmodels=LinearRegressionModels()
 linearregressionmodels.ridgeRegression()
 
