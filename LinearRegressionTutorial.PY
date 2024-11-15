@@ -17,10 +17,10 @@ class LinearRegressionModels():
         y=df['Marks'] #we want to predict that 
         x=df.drop('Marks',axis=1)
         model=self.lm.fit(x,y) #learning process
-        print("tahmin edilen değer: ",model.predict([[5,4]]))
         print("modelin skoru: ",model.score(x,y))
         print("modelin coef sabiti: ",model.coef_)
         print("modelin intercept katsayısı: ",model.intercept_)
+        print("tahmin edilen değer: ",model.predict([[5,4]]))
     #preparing data for learning process
     def preProcessingTrainTestSplit(self):
         #reading files
