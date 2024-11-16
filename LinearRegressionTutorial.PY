@@ -2,6 +2,7 @@ from sklearn.linear_model import LinearRegression,Lasso,Ridge,ElasticNet,Logisti
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error,mean_absolute_error,mean_absolute_percentage_error,r2_score
 from sklearn.tree import DecisionTreeClassifier,export_graphviz
+from sklearn import tree
 import pandas as pd
 import numpy as np
 import seaborn as sns
@@ -110,17 +111,22 @@ class LinearRegressionModels():
         file="heart.csv"
         data=pd.read_csv(file)
         df=pd.DataFrame(data)
+        df['output'].fillna(df['output'].mode()[0], inplace=True) 
         y=df['output']
         x=df.drop('output',axis=1)
-        tree=DecisionTreeClassifier()
-        model=tree.fit(x,y)
+        trees=DecisionTreeClassifier()
+        model=trees.fit(x,y)
         print("model score: ",model.score(x,y))
         x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=42)
-        model=tree.fit(x_train,y_train)
+        model=trees.fit(x_train,y_train)
         print("test score:",model.score(x_test,y_test))
-
+        yEncoded=y
+        xEncoded=df.drop('output',axis=1)
+        decisionTree=tree.DecisionTreeClassifier(random_state=12345)
+        decisionTree=decisionTree.fit(xEncoded,yEncoded)
+        fig=tree.plot_tree(decisionTree,filled=True,rounded=True,class_names=["dangerous","normal"],feature_names=xEncoded.columns)
+        plt.show()
 linearregressionmodels=LinearRegressionModels()
 linearregressionmodels.decisionTree()
-
 
     
